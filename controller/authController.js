@@ -62,7 +62,7 @@ exports.login = catchAsyncErrors(async (req, res, next) => {
     return next(new AppErrors(401, 'Invalid email or password'));
   }
 
-  createandSendToken(user, 200, req, req, res);
+  createandSendToken(user, 200, req, res);
 });
 
 exports.protect = catchAsyncErrors(async (req, res, next) => {

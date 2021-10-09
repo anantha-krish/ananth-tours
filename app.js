@@ -30,17 +30,13 @@ app.set('views', path.join(__dirname, 'views'));
 /* app.use(express.static(`${__dirname}/public`)); */
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(helmet({ contentSecurityPolicy: false }));
+
 /** enable cors for all reqests */
 app.use(cors());
 /** enable cors for pre-flight requests */
 app.options('*', cors());
 
-// Secure http headers
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  })
-);
 app.use(cookieParser());
 
 //logging purpose

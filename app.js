@@ -8,6 +8,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const cookieParser = require('cookie-parser');
 const hpp = require('hpp');
+const cors = require('cors');
 const path = require('path');
 const compression = require('compression');
 const tourRouter = require('./routes/tourRoutes');
@@ -17,8 +18,8 @@ const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const AppErrors = require('./utils/appErrors');
 const globalErrorHandler = require('./controller/errorController');
-
 const app = express();
+
 // 1) MIDDLEWARES
 app.enable('trust proxy');
 //set template engine
@@ -28,6 +29,11 @@ app.set('views', path.join(__dirname, 'views'));
 //serving static files
 /* app.use(express.static(`${__dirname}/public`)); */
 app.use(express.static(path.join(__dirname, 'public')));
+
+/** enable cors for all reqests */
+app.use(cors());
+/** enable cors for pre-flight requests */
+app.options('*', cors());
 
 // Secure http headers
 app.use(helmet());

@@ -20,7 +20,7 @@ const globalErrorHandler = require('./controller/errorController');
 
 const app = express();
 // 1) MIDDLEWARES
-
+app.enable('trust proxy');
 //set template engine
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));

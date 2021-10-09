@@ -40,3 +40,12 @@ process.on('unhandledRejection', (err) => {
   //gracefully shutdown, process pending requests first
   server.close(() => process.exit(1));
 });
+
+// every 24 hours heroku restarts the dyno
+// in case tell the server to close gracefully
+process.on('SIGTERM', () => {
+  console.log('SIGTERM recieved! app will shutdown gracefully');
+  server.close(() => {
+    console.log('Shutdown completed!!!');
+  });
+});

@@ -11,18 +11,16 @@ const signToken = (id) =>
     expiresIn: process.env.JWT_EXPIRES,
   });
 
-const createandSendToken = (user, statusCode, res) => {
+const createandSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
+    //will be enabled in production
+    secure: req.isSecure || req.headers['x-forwarded-proto'] === 'https',
   };
-  if (process.env.NODE_ENV === 'production') {
-    //needs https
-    cookieOptions.secure = true;
-  }
   //creating cookie
   res.cookie('jwt', token, cookieOptions);
 
@@ -50,7 +48,7 @@ exports.signup = catchAsyncErrors(async (req, res, next) => {
   const url = `${req.protocol}://${req.get('host')}/account`;
   await new Email(newUser, url).sendWelcome();
   //JWT
-  createandSendToken(newUser, 201, res);
+  createandSendToken(newUser, 201, req, res);
 });
 
 exports.login = catchAsyncErrors(async (req, res, next) => {
@@ -64,7 +62,7 @@ exports.login = catchAsyncErrors(async (req, res, next) => {
     return next(new AppErrors(401, 'Invalid email or password'));
   }
 
-  createandSendToken(user, 200, res);
+  createandSendToken(user, 200, req, req, res);
 });
 
 exports.protect = catchAsyncErrors(async (req, res, next) => {
@@ -208,7 +206,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save();
-  createandSendToken(user, 200, res);
+  createandSendToken(user, 200, req, res);
 });
 
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
@@ -223,7 +221,7 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
-  createandSendToken(user, 200, res);
+  createandSendToken(user, 200, req, res);
 });
 
 exports.logout = (req, res, next) => {

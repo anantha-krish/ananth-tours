@@ -36,7 +36,11 @@ app.use(cors());
 app.options('*', cors());
 
 // Secure http headers
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 app.use(cookieParser());
 
 //logging purpose

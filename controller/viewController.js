@@ -25,10 +25,10 @@ exports.getTour = catchAsyncErrors(async (req, res, next) => {
   }
   res
     .status(200)
-    .set(
-      'Content-Security-Policy',
-      'connect-src /api/v1/ https://*.tiles.mapbox.com https://api.mapbox.com https://events.mapbox.com'
-    )
+    // .set(
+    //   'Content-Security-Policy',
+    //   'connect-src /api/v1/ https://*.tiles.mapbox.com https://api.mapbox.com https://events.mapbox.com'
+    // )
     .render('tour', {
       title: `${tour.name}`,
       tour,
@@ -38,10 +38,10 @@ exports.getTour = catchAsyncErrors(async (req, res, next) => {
 exports.login = catchAsyncErrors(async (req, res, next) => {
   res
     .status(200)
-    .set(
+    /*     .set(
       'Content-Security-Policy',
       "connect-src 'self' https://cdnjs.cloudflare.com"
-    )
+    ) */
     .render('login');
 });
 

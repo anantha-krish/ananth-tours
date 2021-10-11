@@ -3,6 +3,7 @@ import '@babel/polyfill';
 import { login, updateSettings, logout } from './login';
 import { loadMap } from './mapBox';
 import { bookTour } from './stripe';
+import { showAlert } from './alert';
 const map = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
@@ -67,3 +68,6 @@ if (bookTourBtn) {
     bookTour(tourId);
   });
 }
+
+const alertMessage = document.querySelector('body').dataset.alert;
+if (alertMessage) showAlert('success', alertMessage, 20);

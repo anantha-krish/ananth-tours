@@ -73,3 +73,11 @@ exports.getMyBookings = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).render('overview', { tours });
 });
+
+exports.alerts = (req, res, next) => {
+  const { alert } = req.query;
+  if (alert === 'booking')
+    res.locals.alert =
+      "Your booking has been confirmed. Please check the mail for confirmation.If your booking doesn't show up here, please try again later.";
+  next();
+};

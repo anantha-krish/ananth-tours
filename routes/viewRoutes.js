@@ -13,6 +13,7 @@ router.get(
   viewController.getTour
 );
 router.get('/login', authController.isUserLoggedIn, viewController.login);
+router.get('/signup', authController.isUserLoggedIn, viewController.signup);
 router.get('/account', authController.protect, viewController.getAccount);
 router.get(
   '/my-bookings',

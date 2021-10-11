@@ -56,3 +56,27 @@ export const updateSettings = async (data, type) => {
     showAlert('error', err.response.data.message);
   }
 };
+
+export const signup = async ({ name, email, password, passwordConfirm }) => {
+  try {
+    const response = await axios({
+      method: 'POST',
+      // url: '/api/v1/users/login',
+      url: '/api/v1/users/signup',
+      data: {
+        name,
+        email,
+        password,
+        passwordConfirm,
+        role: 'user',
+      },
+    });
+
+    if (response.data.status === 'success') {
+      showAlert('success', 'Signup was successful!');
+      setTimeout(() => location.assign('/account'), 1500);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};

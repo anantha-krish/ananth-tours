@@ -35,6 +35,16 @@ exports.getTour = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
+exports.signup = (req, res, next) => {
+  res
+    .status(200)
+    .set(
+      'Content-Security-Policy',
+      "connect-src 'self' https://cdnjs.cloudflare.com"
+    )
+    .render('signup', { title: 'Signup' });
+};
+
 exports.login = catchAsyncErrors(async (req, res, next) => {
   res
     .status(200)
@@ -42,7 +52,7 @@ exports.login = catchAsyncErrors(async (req, res, next) => {
       'Content-Security-Policy',
       "connect-src 'self' https://cdnjs.cloudflare.com"
     )
-    .render('login');
+    .render('login', { title: 'Login' });
 });
 
 exports.getAccount = catchAsyncErrors(async (req, res, next) => {
@@ -62,7 +72,9 @@ exports.updateUserDetails = catchAsyncErrors(async (req, res, next) => {
     }
   );
 
-  res.status(200).render('account', { user: updatedUser });
+  res
+    .status(200)
+    .render('account', { title: 'Your  Account', user: updatedUser });
 });
 
 exports.getMyBookings = catchAsyncErrors(async (req, res, next) => {
@@ -71,7 +83,7 @@ exports.getMyBookings = catchAsyncErrors(async (req, res, next) => {
   const tourIds = myTours.map((el) => el.tour);
   const tours = await Tours.find({ _id: { $in: tourIds } });
 
-  res.status(200).render('overview', { tours });
+  res.status(200).render('overview', { title: 'My Bookings', tours });
 });
 
 exports.alerts = (req, res, next) => {

@@ -17,6 +17,7 @@ const reviewRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const AppErrors = require('./utils/appErrors');
+const bookingController = require('./controller/bookingController');
 const globalErrorHandler = require('./controller/errorController');
 const app = express();
 
@@ -50,6 +51,15 @@ const limiter = rateLimit({
 });
 //only use rate limits for apis
 app.use('/api', limiter);
+
+/** defined before converting to JSON, as we want response as a stream */
+app.post(
+  '/webhook-checkout',
+  express.raw({
+    type: 'application/json',
+  }),
+  bookingController.webhookCheckout
+);
 
 // by default, express won't append body to req object. Hence middleware support is needed
 app.use(express.json({ limit: '10kb' }));
